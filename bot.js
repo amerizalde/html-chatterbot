@@ -4,10 +4,23 @@ const chatWindow = document.getElementById('chat-window');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 
+// Add a markdown renderer (using marked.js CDN)
+if (!window.markedLoaded) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+    script.onload = () => { window.markedLoaded = true; };
+    document.head.appendChild(script);
+}
+
 function appendMessage(sender, text) {
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${sender}`;
-    msgDiv.textContent = text;
+    // Render markdown for bot responses, plain text for user
+    if (sender === 'bot' && window.marked) {
+        msgDiv.innerHTML = window.marked.parse(text);
+    } else {
+        msgDiv.textContent = text;
+    }
     chatWindow.appendChild(msgDiv);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
@@ -25,9 +38,11 @@ async function callBotAPI(prompt) {
 window.addEventListener('message', async (event) => {
     if (!event.data || !event.data.prompt) return;
     const prompt = event.data.prompt;
-    appendMessage('user', prompt);
+    // Label the user message as coming from the other bot
+    const botLabel = window.frameElement && window.frameElement.title ? window.frameElement.title : 'Bot';
+    appendMessage('user', `[From other bot] ${prompt}`);
     const response = await callBotAPI(prompt);
-    appendMessage('bot', response);
+    appendMessage('bot', `[${botLabel}] ${response}`);
     // Send response back to parent
     window.parent.postMessage({ response }, '*');
 });

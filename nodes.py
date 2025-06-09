@@ -21,11 +21,11 @@ class GetQuestionNode(Node):
 class AnswerNode(Node):
     def prep(self, shared):
         # Read question from shared
-        return shared["question"]
+        return shared
     
-    def exec(self, question):
+    def exec(self, shared):
         # Call LLM to get the answer
-        return call_llm(question)
+        return call_llm(shared["question"], shared["model"])
     
     def post(self, shared, prep_res, exec_res):
         # Store the answer in shared

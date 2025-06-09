@@ -24,7 +24,7 @@ def bot_api():
     shared = {
         "question": prompt,
         "answer": None,
-        "model": "deepseek-r1:8b-0528-qwen3-q8_0"
+        "model": "gemma3:12b-it-qat"
     }
     qa_flow = create_qa_flow()
     qa_flow.run(shared)
