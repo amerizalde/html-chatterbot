@@ -12,48 +12,25 @@ function appendMessage(sender, text) {
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
-function botReply(message) {
-    // Simple rule-based responses
-    const msg = message.toLowerCase();
-    if (msg.includes('hello') || msg.includes('hi')) {
-        return "Hello! How can I help you today?";
-    } else if (msg.includes('how are you')) {
-        return "I'm just a bot, but I'm doing great!";
-    } else if (msg.includes('name')) {
-        return "I'm Chatterbot, your friendly assistant.";
-    } else if (msg.includes('bye')) {
-        return "Goodbye! Have a nice day!";
-    } else {
-        return "Sorry, I didn't understand that. Can you rephrase?";
-    }
+async function callBotAPI(prompt) {
+    const res = await fetch('/api/bot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    return data.response || data.error || 'Error: No response';
 }
 
-chatForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const userMsg = userInput.value.trim();
-    if (!userMsg) return;
-    appendMessage('user', userMsg);
-    setTimeout(() => {
-        const reply = botReply(userMsg);
-        appendMessage('bot', reply);
-    }, 400);
-    userInput.value = '';
+window.addEventListener('message', async (event) => {
+    if (!event.data || !event.data.prompt) return;
+    const prompt = event.data.prompt;
+    appendMessage('user', prompt);
+    const response = await callBotAPI(prompt);
+    appendMessage('bot', response);
+    // Send response back to parent
+    window.parent.postMessage({ response }, '*');
 });
 
-// Initial bot greeting
-appendMessage('bot', "Hi! I'm Chatterbot. Ask me anything!");
-
-// Add postMessage support for iframe agent mode
-function receiveParentMessage(event) {
-    if (!event.data || event.data.from !== 'parent') return;
-    const userMsg = event.data.message;
-    appendMessage('user', userMsg);
-    setTimeout(() => {
-        const reply = botReply(userMsg);
-        appendMessage('bot', reply);
-        // Identify this bot (bot1 or bot2) by window.name
-        window.parent.postMessage({ from: window.name || 'bot1', message: reply }, '*');
-    }, 400);
-}
-
-window.addEventListener('message', receiveParentMessage);
+// Optional: Initial greeting
+// appendMessage('bot', "Ready to help!");

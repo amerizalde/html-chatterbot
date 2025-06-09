@@ -23,7 +23,8 @@ def bot_api():
         return jsonify({'error': 'No prompt provided'}), 400
     shared = {
         "question": prompt,
-        "answer": None
+        "answer": None,
+        "model": "deepseek-r1:8b-0528-qwen3-q8_0"
     }
     qa_flow = create_qa_flow()
     qa_flow.run(shared)

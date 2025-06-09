@@ -8,43 +8,42 @@ const userProblemInput = document.getElementById('user-problem');
 
 let revolutionCount = 0;
 const MAX_REVOLUTIONS = 5;
-let lastMessage = '';
 let flowActive = false;
+let lastBot = null;
+let lastMessage = '';
 
 function startFlow(problem) {
     revolutionCount = 0;
-    lastMessage = problem;
     flowActive = true;
+    lastBot = 'bot1';
+    lastMessage = problem;
     // Start by sending user input to Bot 1
-    bot1Frame.contentWindow.postMessage({ from: 'parent', message: problem }, '*');
+    bot1Frame.contentWindow.postMessage({ prompt: problem }, '*');
 }
 
-function handleBotMessage(event) {
-    if (!flowActive) return;
-    const { from, message } = event.data;
+window.addEventListener('message', async (event) => {
+    // Only handle messages from iframes
+    if (!flowActive || !event.data || !event.data.response) return;
+    const response = event.data.response;
     if (revolutionCount >= MAX_REVOLUTIONS) {
         flowActive = false;
         return;
     }
-    if (from === 'bot1') {
+    if (lastBot === 'bot1') {
         // Bot 1 responded, send to Bot 2
-        bot2Frame.contentWindow.postMessage({ from: 'parent', message }, '*');
-    } else if (from === 'bot2') {
+        lastBot = 'bot2';
+        bot2Frame.contentWindow.postMessage({ prompt: response }, '*');
+    } else {
         // Bot 2 responded, send to Bot 1
         revolutionCount++;
         if (revolutionCount < MAX_REVOLUTIONS) {
-            bot1Frame.contentWindow.postMessage({ from: 'parent', message }, '*');
+            lastBot = 'bot1';
+            bot1Frame.contentWindow.postMessage({ prompt: response }, '*');
         } else {
             flowActive = false;
         }
     }
-}
-
-function getRevolutionCount() {
-    return revolutionCount;
-}
-
-window.addEventListener('message', handleBotMessage);
+});
 
 userInputForm.addEventListener('submit', function(e) {
     e.preventDefault();

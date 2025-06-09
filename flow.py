@@ -9,6 +9,7 @@ def create_qa_flow():
     
     # Connect nodes in sequence
     get_question_node >> answer_node
+    get_question_node - "complete"
     
     # Create flow starting with input node
     return Flow(start=get_question_node)
