@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Chatterbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="iframe-row">
+            <iframe id="bot1-frame" src="bot.html" class="chat-iframe" title="Bot 1"></iframe>
+            <iframe id="bot2-frame" src="bot.html" class="chat-iframe" title="Bot 2"></iframe>
+        </div>
+        <form id="user-input-form" autocomplete="off" class="user-input-form">
+            <input type="text" id="user-problem" placeholder="Enter a problem for the bots to solve..." required />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

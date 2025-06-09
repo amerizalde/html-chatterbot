@@ -1,0 +1,128 @@
+body {
+    background: #f4f6fb;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.chat-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    width: 350px;
+    max-width: 90vw;
+    padding: 24px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-window {
+    height: 350px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #fafbfc;
+    font-size: 15px;
+}
+
+.message {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.message.user {
+    text-align: right;
+    color: #2b7cff;
+}
+
+.message.bot {
+    text-align: left;
+    color: #222;
+}
+
+#chat-form {
+    display: flex;
+    gap: 8px;
+}
+
+#user-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button[type="submit"] {
+    background: #2b7cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #1a5fcc;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.iframe-row {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.chat-iframe {
+    width: 350px;
+    height: 420px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.user-input-form {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    max-width: 720px;
+}
+
+#user-problem {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background: #2b7cff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #1a5fcc;
+}
