@@ -1,14 +1,18 @@
 import requests
+import models
 
 # Learn more about calling the LLM: https://the-pocket.github.io/PocketFlow/utility_function/llm.html
 
-def call_llm(prompt, model=None, host="http://192.168.0.250:11434"):
+def call_llm(prompt, model=None, host=models.SERVER_URL):
     # Ensure model is not None or empty
-    if not model:
-        model = "devstral:24b"
+    if model not in models.ollama_models:
+        model = "gemma3:12b"
+        print("*********************")
+        print(f"Loading model: {model}")
+        print("*********************")
     else:
         print("*********************")
-        print(f"Using model: {model}")
+        print(f"Loading model: {model}")
         print("*********************")
     url = f"{host}/api/generate"
     payload = {

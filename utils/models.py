@@ -1,7 +1,9 @@
+SERVER_URL = "http://192.168.0.240:11434"
+
 def get_ollama_models():
     try:
         import requests
-        resp = requests.get('http://192.168.0.250:11434/api/tags', timeout=3)
+        resp = requests.get(f'{SERVER_URL}/api/tags', timeout=3)
         resp.raise_for_status()
         return [m["name"] for m in resp.json()['models']]
     except Exception:
